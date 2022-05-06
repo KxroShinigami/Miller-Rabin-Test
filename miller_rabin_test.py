@@ -12,28 +12,30 @@ while(prime%2 != 1):
         except Exception as e:
                 print("\nError: ", e)
 
-try: # a
-        print("\nPlease enter a valid relatively prime integer to *prime* {2, 3, ..., prime-2}: ")
-        a = int(input("a: "))
-except Exception as e:
-        print("\nError: ", e)
 
-
-def miller_rabin_test(prime, a):
-                s = len(format(prime, "b"))
+def miller_rabin_test(prime):
+                for s in range(prime-1, 0, -1):
+                      if((prime-1)%(2**s) == 0): break # max 2^r divisor for "prime"-1
                 d = (prime-1)/(2**s)
-                if((a**d) % prime == 1):
-                        print(prime, " is a prime number")
-                else:
-                        r = 0 # r = {0, 1, ..., s-1}
-                        while((a**((2**r)*d))%prime != -1 and r <= s):
-                                r = r +1
+                print("d = ", d, " s = ", s)
+                for a in range(2, prime - 2):
+                        print("\nbase: ", a)
 
-                        if(r >= s): print(prime, " is a prime number")
-                        else: print(prime, " is a prime number")
+                        if(pow(a, int(d), prime) == 1):
+                                print(prime, " is most likely a prime number")
+                                break
+                        else:
+                                r_i = 0 # r_i = {0, 1, ..., s-1}
+                                num = 0
+                                while(num != prime-1 and r_i < s):
+                                        num = pow(a, int((pow(2, r_i, prime))*d), prime)
+                                        #print("a^(2^(r)*d) : ", num)
+                                        r_i = r_i + 1
+
+                                if(r_i >= s): print(prime, " is not a prime number")
+                                else: 
+                                        print(prime, " is most likely a prime number")
+                                        break
 
 
-
-
-
-miller_rabin_test(prime, a)
+miller_rabin_test(prime)
